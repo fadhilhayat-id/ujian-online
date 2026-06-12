@@ -1,4 +1,5 @@
-const API_URL = "URL_WEB_APP_APPS_SCRIPT_ANDA";
+const API_URL = "https://script.google.com/macros/s/AKfycbwX9MFa3mcGDbKDQIsQWl0V6F-QlMFcOMOSyvOp7C2wOvr03pO0hxKG6X-BTG5f-NQcZg/exec
+";
 
 // Ambil soal saat halaman dimuat
 async function ambilSoal() {
