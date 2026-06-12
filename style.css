@@ -1,1 +1,45 @@
+// Update Counter Pelanggaran di HTML saat pindah tab
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    jumlahPelanggaran++;
+    // Mengubah teks badge di HTML secara langsung
+    const badge = document.getElementById("badge-pelanggaran");
+    if(badge) badge.innerText = `Pindah Tab: ${jumlahPelanggaran}x`;
+    
+    alert(`Peringatan! Anda meninggalkan halaman ujian. Pelanggaran: ${jumlahPelanggaran} kali.`);
+  }
+});
 
+// Render 5 Opsi ke dalam standar Card Bootstrap
+function tampilkanSoal() {
+  const container = document.getElementById("box-soal");
+  container.innerHTML = "";
+  
+  dataUjian.forEach((soal, index) => {
+    let opsiHTML = "";
+    
+    // Looping 5 opsi jawaban
+    soal.pilihan.forEach((opsi, i) => {
+      const opsiId = `soal_${soal.id}_opsi_${i}`;
+      opsiHTML += `
+        <div class="form-check my-2 p-2 border rounded bg-light">
+          <input class="form-check-input ms-1" type="radio" name="soal_${soal.id}" id="${opsiId}" value="${opsi}">
+          <label class="form-check-label ms-2 w-100" for="${opsiId}">
+            ${opsi}
+          </label>
+        </div>
+      `;
+    });
+    
+    container.innerHTML += `
+      <div class="card card-soal shadow-sm mb-4">
+        <div class="card-body p-4">
+          <h5 class="card-title mb-3 fw-semibold">${index + 1}. ${soal.pertanyaan}</h5>
+          <div class="opsi-container">
+            ${opsiHTML}
+          </div>
+        </div>
+      </div>
+    `;
+  });
+}
