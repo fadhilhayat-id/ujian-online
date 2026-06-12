@@ -35,12 +35,13 @@
                 data.forEach((soal, index) => {
                     tempatSoal.innerHTML += `
                         <div class="soal-container">
-                            <p>${index + 1}. ${soal.pertanyaan}</p>
-                            <input type="radio" name="soal_${soal.id}" value="A"> ${soal.opsiA}<br>
-                            <input type="radio" name="soal_${soal.id}" value="B"> ${soal.opsiB}<br>
-                            <input type="radio" name="soal_${soal.id}" value="C"> ${soal.opsiC}<br>
-                            <input type="radio" name="soal_${soal.id}" value="D"> ${soal.opsiD}
-                        </div>
+            <p><strong>${index + 1}. ${soal.pertanyaan}</strong></p>
+            <label><input type="radio" name="soal_${soal.id}" value="A"> A. ${soal.opsiA}</label><br>
+            <label><input type="radio" name="soal_${soal.id}" value="B"> B. ${soal.opsiB}</label><br>
+            <label><input type="radio" name="soal_${soal.id}" value="C"> C. ${soal.opsiC}</label><br>
+            <label><input type="radio" name="soal_${soal.id}" value="D"> D. ${soal.opsiD}</label><br>
+            <label><input type="radio" name="soal_${soal.id}" value="E"> E. ${soal.opsiE}</label><br>
+        </div>
                     `;
                 });
             } catch (error) {
