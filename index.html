@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ujian Online</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .soal-container { margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+
+    <h1>Lembar Ujian Online</h1>
+    <div id="loading">Memuat soal...</div>
+    <form id="formUjian" style="display:none;">
+        <div id="tempatSoal"></div>
+        <button type="submit">Kirim Jawaban</button>
+    </form>
+
+    <script>
+        // MASUKKAN URL GOOGLE APPS SCRIPT ANDA DI SINI
+        const webAppUrl = "https://script.google.com/macros/s/AKfycbyaVwm-AfFVp2Albj28KUEE-j2tqmQS4cGmHRIXeC89gA7qoY641fvq9OvjsmhLIbATLg/exec";
+
+        // 1. Mengambil Soal dari Google Sheets lewat GAS
+        async function ambilSoal() {
+            try {
+                let response = await fetch(webAppUrl);
+                let data = await response.json();
+                
+                let tempatSoal = document.getElementById('tempatSoal');
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('formUjian').style.display = 'block';
+
+                data.forEach((soal, index) => {
+                    tempatSoal.innerHTML += `
+                        <div class="soal-container">
+                            <p>${index + 1}. ${soal.pertanyaan}</p>
+                            <input type="radio" name="soal_${soal.id}" value="A"> ${soal.opsiA}<br>
+                            <input type="radio" name="soal_${soal.id}" value="B"> ${soal.opsiB}<br>
+                            <input type="radio" name="soal_${soal.id}" value="C"> ${soal.opsiC}<br>
+                            <input type="radio" name="soal_${soal.id}" value="D"> ${soal.opsiD}
+                        </div>
+                    `;
+                });
+            } catch (error) {
+                console.error("Gagal mengambil soal:", error);
+                document.getElementById('loading').innerText = "Gagal memuat soal.";
+            }
+        }
+
+        // 2. Mengirim Jawaban Kembali ke Google Sheets
+        document.getElementById('formUjian').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Contoh struktur data yang akan dikirim
+            let dataJawaban = {
+                nama: "Siswa Contoh",
+                nilai: 80 // Anda bisa buat logika hitung nilai di sini
+            };
+
+            try {
+                let response = await fetch(webAppUrl, {
+                    method: 'POST',
+                    mode: 'no-cors', // Penting agar tidak terkena CORS error di beberapa browser
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dataJawaban)
+                });
+                alert("Jawaban berhasil dikirim!");
+            } catch (error) {
+                alert("Gagal mengirim jawaban.");
+            }
+        });
+
+        // Jalankan fungsi saat halaman dimuat
+        ambilSoal();
+    </script>
+</body>
+</html>
