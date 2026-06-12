@@ -1,1 +1,114 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aplikasi Ujian Online </title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f8f9fa;
+      user-select: none; /* Anti-copy tingkat dasar di CSS */
+    }
+    .card-soal {
+      border-left: 5px solid #0d6efd;
+      transition: all 0.3s ease;
+    }
+    .card-soal:hover {
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    /* Sembunyikan area ujian sebelum login */
+    #area-ujian {
+      display: none;
+    }
+  </style>
+</head>
+<body>
 
+  <div class="container my-5">
+    
+    <div class="text-center mb-5">
+      <h1 class="fw-bold text-primary">CBT Online Portal</h1>
+      <p class="text-muted">Pastikan koneksi stabil dan dilarang berpindah tab selama ujian berlangsung.</p>
+    </div>
+
+    <div id="area-login" class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card shadow-sm p-4">
+          <h4 class="mb-3 text-center fw-semibold">Data Peserta Ujian</h4>
+          <form id="form-registrasi" onsubmit="mulaiUjian(event)">
+            <div class="mb-3">
+              <label for="input-nama" class="form-label">Nama Lengkap</label>
+              <input type="text" class="form-control" id="input-nama" required placeholder="Masukkan nama lengkap">
+            </div>
+            <div class="mb-3">
+              <label for="input-email" class="form-label">Alamat Email</label>
+              <input type="email" class="form-control" id="input-email" required placeholder="nama@sekolah.sch.id">
+            </div>
+            <button type="submit" class="btn btn-primary w-100 fw-bold">Mulai Ujian Sekarang</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div id="area-ujian" class="row justify-content-center">
+      <div class="col-lg-8">
+        
+        <div class="card bg-white shadow-sm p-3 mb-4 sticky-top border-0">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <span class="text-muted small">Peserta:</span>
+              <strong id="display-nama" class="d-block text-dark">-</strong>
+            </div>
+            <div class="text-end">
+              <span class="badge bg-danger p-2" id="badge-pelanggaran">Pindah Tab: 0x</span>
+            </div>
+          </div>
+        </div>
+
+        <div id="box-soal">
+          <div class="text-center my-5">
+            <div class="spinner-border text-primary" role="status"></div>
+            <p class="mt-2 text-muted">Mengambil bank soal acak...</p>
+          </div>
+        </div>
+
+        <div class="text-center mt-4 mb-5">
+          <button type="button" class="btn btn-success btn-lg px-5 fw-bold shadow-sm" onclick="konfirmasiSubmit()">
+            Selesai & Kirim Jawaban
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    // Fungsi jembatan untuk mengontrol alur halaman HTML
+    function mulaiUjian(event) {
+      event.preventDefault();
+      
+      const nama = document.getElementById("input-nama").value;
+      if (!nama) return;
+
+      // Sinkronisasi info nama ke dashboard ujian
+      document.getElementById("display-nama").innerText = nama;
+      
+      // Tukar tampilan halaman
+      document.getElementById("area-login").style.display = "none";
+      document.getElementById("area-ujian").style.display = "flex";
+      
+      // Jalankan fungsi dari app.js untuk load soal
+      muatUjian();
+    }
+
+    function konfirmasiSubmit() {
+      if (confirm("Apakah Anda yakin ingin mengakhiri ujian? Jawaban yang dikirim tidak dapat diubah.")) {
+        submitUjian();
+      }
+    }
+  </script>
+</body>
+</html>
